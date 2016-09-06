@@ -46,22 +46,31 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode factor() {
-
-		// TODO fill me in
+		
+		// comparison to length should be applied first to avoid subscript-out-of-range
 		
 		if (currentToken >= tokens.length) {
 			System.err.println("Start factor() wrongly.");
 			return null;
 		} else if (tokens[currentToken].equals("(")) {
+
+			// "(" will only be recognized here and ")" will only be
+			// consumed here so as to make sure that the parentheses match.
+			
 			++currentToken;
 			TreeNode result = expression();
-			if (currentToken >= tokens.length || !tokens[currentToken].equals(")")) {
+			if (currentToken >= tokens.length ||
+				!tokens[currentToken].equals(")")) {
 				System.err.println("Missing ) in factor()");
 				return null;
 			}
 			++currentToken;
 			return result;
 		} else if (tokens[currentToken].equals("-")) {
+			
+			// here we should call factor() recursively instead of assuming that
+			// tokens[currentToken + 1] is a digit. otherwise "---" can't be handled correctly
+			
 			++currentToken;
 			TreeNode num = factor();
 			return new UnaryMinusTreeNode(num);
@@ -80,8 +89,6 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode term() {
-
-		// TODO fill me in
 		
 		TreeNode result;
 		if (currentToken < tokens.length) {
@@ -92,7 +99,10 @@ public class Parser {
 		}
 		
 		while (true) {
-			if (currentToken >= tokens.length || tokens[currentToken].equals("+") || tokens[currentToken].equals("-") || tokens[currentToken].equals(")")) {
+			if (currentToken >= tokens.length ||
+				tokens[currentToken].equals("+") ||
+				tokens[currentToken].equals("-") ||
+				tokens[currentToken].equals(")")) {
 				return result;
 			} else if (tokens[currentToken].equals("*")) {
 				++currentToken;
@@ -105,10 +115,13 @@ public class Parser {
 				TreeNode temp2 = new DivisionTreeNode(result, temp);
 				result = temp2;
 			} else {
-				System.err.println("Unexpected symbol in term() while parsing " + tokens[currentToken]);
-				PrintTreeVisitor v = new PrintTreeVisitor();
-				result.accept(v);
-				System.out.println(v.getResult());
+				
+				// output temporary result and remaining text to assist in debugging
+				
+				System.err.println("Unexpected symbol in term() while parsing.");
+				PrintTreeVisitor printVisitor = new PrintTreeVisitor();
+				result.accept(printVisitor);
+				System.out.println(printVisitor.getResult());
 				for (int i = currentToken; i < tokens.length; ++i)
 					System.out.print(tokens[i]);
 				System.out.println("");
@@ -123,8 +136,6 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode expression() {
-
-		// TODO fill me in
 		
 		TreeNode result;
 		if (currentToken < tokens.length) {
@@ -135,7 +146,8 @@ public class Parser {
 		}
 		
 		while (true) {
-			if (currentToken >= tokens.length || tokens[currentToken].equals(")")) {
+			if (currentToken >= tokens.length ||
+				tokens[currentToken].equals(")")) {
 				return result;
 			} else if (tokens[currentToken].equals("+")) {
 				++currentToken;
@@ -148,10 +160,13 @@ public class Parser {
 				TreeNode temp2 = new SubtractionTreeNode(result, temp);
 				result = temp2;
 			} else {
-				System.err.println("Unexpected symbol in expression() while parsing " + tokens[currentToken]); 
-				PrintTreeVisitor v1 = new PrintTreeVisitor();
-				result.accept(v1);
-				System.out.println(v1.getResult());
+				
+				// output temporary result and remaining text to assist in debugging
+				
+				System.err.println("Unexpected symbol in expression() while parsing."); 
+				PrintTreeVisitor printVisitor = new PrintTreeVisitor();
+				result.accept(printVisitor);
+				System.out.println(printVisitor.getResult());
 				for (int i = currentToken; i < tokens.length; ++i)
 					System.out.print(tokens[i]);
 				System.out.println("");
