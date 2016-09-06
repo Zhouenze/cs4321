@@ -3,6 +3,9 @@ package cs4321.project1;
 import cs4321.project1.list.DivisionListNode;
 import cs4321.project1.list.SubtractionListNode;
 import cs4321.project1.list.NumberListNode;
+
+import java.util.Stack;
+
 import cs4321.project1.list.AdditionListNode;
 import cs4321.project1.list.MultiplicationListNode;
 import cs4321.project1.list.UnaryMinusListNode;
@@ -14,43 +17,72 @@ import cs4321.project1.list.UnaryMinusListNode;
  */
 public class EvaluatePostfixListVisitor implements ListVisitor {
 
+	private Stack<Double> operation;
+	
 	public EvaluatePostfixListVisitor() {
-		// TODO fill me in
+		operation = new Stack<Double>();
 	}
 
 	public double getResult() {
-		// TODO fill me in
-		return 42; // so that skeleton code compiles
+		return operation.peek();
 	}
 
 	@Override
 	public void visit(NumberListNode node) {
 		// TODO fill me in
+		operation.push(node.getData());
+		if (node.getNext() != null) {
+			node.getNext().accept(this);
+		}
 	}
 
 	@Override
 	public void visit(AdditionListNode node) {
-		// TODO fill me in
+		operation.push(operation.pop() + operation.pop());
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
+		
 	}
 
 	@Override
 	public void visit(SubtractionListNode node) {
-		// TODO fill me in
+		double right = operation.pop();
+		double left = operation.pop();
+		
+		operation.push(left - right);
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
+		
 	}
 
 	@Override
 	public void visit(MultiplicationListNode node) {
-		// TODO fill me in
+		operation.push(operation.pop() * operation.pop());
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
+		
 	}
 
 	@Override
 	public void visit(DivisionListNode node) {
-		// TODO fill me in
+		double right = operation.pop();
+		double left = operation.pop();
+		
+		operation.push(left / right);
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
 	}
 
 	@Override
 	public void visit(UnaryMinusListNode node) {
-		// TODO fill me in
+		operation.push(operation.pop() * -1);
+		if (node.getNext() != null) {
+			node.getNext().accept(this);
+		}
 	}
 
 }
