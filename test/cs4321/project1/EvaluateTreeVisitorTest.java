@@ -45,5 +45,52 @@ public class EvaluateTreeVisitorTest {
 		n4.accept(v2);
 		assertEquals(2.0, v2.getResult(), DELTA);
 	}
+	
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testSubtractionNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new SubtractionTreeNode(n1, n2);
+		TreeNode n4 = new SubtractionTreeNode(n2, n1);
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		n3.accept(v1);
+		assertEquals(-1.0, v1.getResult(), DELTA);
+		EvaluateTreeVisitor v2 = new EvaluateTreeVisitor();
+		n4.accept(v2);
+		assertEquals(1.0, v2.getResult(), DELTA);
+	}
 
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testDivisionNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new DivisionTreeNode(n1, n2);
+		TreeNode n4 = new DivisionTreeNode(n2, n1);
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		n3.accept(v1);
+		assertEquals(0.5, v1.getResult(), DELTA);
+		EvaluateTreeVisitor v2 = new EvaluateTreeVisitor();
+		n4.accept(v2);
+		assertEquals(2.0, v2.getResult(), DELTA);
+	}
+	
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testUnaryMinusNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new DivisionTreeNode(n2, n1);
+		TreeNode n4 = new UnaryMinusTreeNode(n3);
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		n4.accept(v1);
+		assertEquals(-2.0, v1.getResult(), DELTA);
+	}
 }

@@ -65,5 +65,107 @@ public class BuildPrefixExpressionTreeVisitorTest {
 		assertTrue(first instanceof NumberListNode);
 		assertEquals(((NumberListNode) first).getData(), 1.0, DELTA);
 	}
+	
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testMultiplicationNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new MultiplicationTreeNode(n1, n2);
+		TreeNode n4 = new MultiplicationTreeNode(n2, n1);
+		
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n3.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof MultiplicationListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		
+		
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		n4.accept(v2);
+		result = v2.getResult();
+		assertTrue(result instanceof MultiplicationListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+	}
+	
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testSubtractionNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new SubtractionTreeNode(n1, n2);
+		TreeNode n4 = new SubtractionTreeNode(n2, n1);
+		
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n3.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof SubtractionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		
+		
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		n4.accept(v2);
+		result = v2.getResult();
+		assertTrue(result instanceof SubtractionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+	}
+	
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testDivisionNode() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(2.0);
+		TreeNode n3 = new DivisionTreeNode(n1, n2);
+		TreeNode n4 = new DivisionTreeNode(n2, n1);
+		
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n3.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof DivisionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		
+		
+        BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		n4.accept(v2);
+		result = v2.getResult();
+		assertTrue(result instanceof DivisionListNode);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 2.0, DELTA);
+		result = result.getNext();
+		assertTrue(result instanceof NumberListNode);
+		assertEquals(((NumberListNode) result).getData(), 1.0, DELTA);
+	}
 
 }
