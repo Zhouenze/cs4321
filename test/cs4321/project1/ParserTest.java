@@ -41,7 +41,7 @@ public class ParserTest {
 		assertEquals("(-(-1.0))", v1.getResult());
 
 	}
-
+	
 	//The first complex additional test provided by front-end engineer Enze Zhou
 	@Test
 	public void additionalTest1() {
@@ -63,4 +63,5 @@ public class ParserTest {
 		assertEquals("(((1.0+2.0)*(3.0/4.0))+((-(-(-5.0)))*(6.0-(-9.0))))", v1.getResult());
 
 	}
+
 }

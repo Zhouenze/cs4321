@@ -12,7 +12,7 @@ import cs4321.project1.tree.*;
  * parentheses (), a factor with a unary - before it, or a number.
  * 
  * @author Lucja Kot
- * @author Enze Zhou ez242
+ * @author Shuang Zhang sz468
  */
 public class Parser {
 
@@ -46,41 +46,28 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode factor() {
-		
-		// comparison to length should be applied first to avoid subscript-out-of-range
-		
-		if (currentToken >= tokens.length) {
-			System.err.println("Start factor() wrongly.");
-			return null;
-		} else if (tokens[currentToken].equals("(")) {
 
-			// "(" will only be recognized here and ")" will only be
-			// consumed here so as to make sure that the parentheses match.
+		// TODO fill me in
+		/*
+		 * F := (E) | F | number
+		 */
+		TreeNode result;
+		if(tokens[currentToken].equals("-")) { // -F
+			currentToken++;
+			result = factor();
+			result = new UnaryMinusTreeNode(result);
+		} else if (tokens[currentToken].equals("(")) { // (E)
+			currentToken++; // consume (
+			result = expression();
+			currentToken++; // consume )
 			
-			++currentToken;
-			TreeNode result = expression();
-			if (currentToken >= tokens.length ||
-				!tokens[currentToken].equals(")")) {
-				System.err.println("Missing ) in factor()");
-				return null;
-			}
-			++currentToken;
-			return result;
-		} else if (tokens[currentToken].equals("-")) {
-			
-			// here we should call factor() recursively instead of assuming that
-			// tokens[currentToken + 1] is a digit. otherwise "---" can't be handled correctly
-			
-			++currentToken;
-			TreeNode num = factor();
-			return new UnaryMinusTreeNode(num);
-		} else if (Character.isDigit(tokens[currentToken].charAt(0))) {
-			return new LeafTreeNode(Double.valueOf(tokens[currentToken++]));
-		} else {
-			System.err.println("Unexpected symbol in factor() while parsing " + tokens[currentToken]);
-			return null;
+		} else { // number
+			result = new LeafTreeNode(Double.valueOf(tokens[currentToken]));
+			currentToken++;
 		}
 		
+		
+		return result;
 	}
 
 	/**
@@ -89,45 +76,21 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode term() {
-		
-		TreeNode result;
-		if (currentToken < tokens.length) {
-			result = factor();
-		} else {
-			System.err.println("Start term() wrongly.");
-			return null;
+
+		// TODO fill me in
+		/*
+		 * T := F {{* | /} F}*
+		 */
+		TreeNode result = factor();
+		while (currentToken < tokens.length && (tokens[currentToken].equals("*") || tokens[currentToken].equals("/"))) {
+			String current = tokens[currentToken];
+			currentToken++;
+			TreeNode result2 = factor();
+			result = current.equals("*") ? new MultiplicationTreeNode(result, result2) : new DivisionTreeNode(result, result2);
 		}
 		
-		while (true) {
-			if (currentToken >= tokens.length ||
-				tokens[currentToken].equals("+") ||
-				tokens[currentToken].equals("-") ||
-				tokens[currentToken].equals(")")) {
-				return result;
-			} else if (tokens[currentToken].equals("*")) {
-				++currentToken;
-				TreeNode temp = factor();
-				TreeNode temp2 = new MultiplicationTreeNode(result, temp);
-				result = temp2;
-			} else if (tokens[currentToken].equals("/")) {
-				++currentToken;
-				TreeNode temp = factor();
-				TreeNode temp2 = new DivisionTreeNode(result, temp);
-				result = temp2;
-			} else {
-				
-				// output temporary result and remaining text to assist in debugging
-				
-				System.err.println("Unexpected symbol in term() while parsing.");
-				PrintTreeVisitor printVisitor = new PrintTreeVisitor();
-				result.accept(printVisitor);
-				System.out.println(printVisitor.getResult());
-				for (int i = currentToken; i < tokens.length; ++i)
-					System.out.print(tokens[i]);
-				System.out.println("");
-				return null;
-			}
-		}
+		return result;
+
 	}
 
 	/**
@@ -136,42 +99,20 @@ public class Parser {
 	 * @return the (root node of) the resulting subtree
 	 */
 	private TreeNode expression() {
-		
-		TreeNode result;
-		if (currentToken < tokens.length) {
-			result = term();
-		} else {
-			System.err.println("Start expression() wrongly.");
-			return null;
+
+		// TODO fill me in
+		/*
+		 * E := T {{+|-} T}*
+		 */
+		TreeNode result = term();
+		while (currentToken < tokens.length && (tokens[currentToken].equals("+") || tokens[currentToken].equals("-"))) {
+			String current = tokens[currentToken];
+			currentToken++;
+			TreeNode result2 = term();
+			result = current.equals("+") ? new AdditionTreeNode(result, result2) : new SubtractionTreeNode(result, result2);
 		}
 		
-		while (true) {
-			if (currentToken >= tokens.length ||
-				tokens[currentToken].equals(")")) {
-				return result;
-			} else if (tokens[currentToken].equals("+")) {
-				++currentToken;
-				TreeNode temp = term();
-				TreeNode temp2 = new AdditionTreeNode(result, temp);
-				result = temp2;
-			} else if (tokens[currentToken].equals("-")) {
-				++currentToken;
-				TreeNode temp = term();
-				TreeNode temp2 = new SubtractionTreeNode(result, temp);
-				result = temp2;
-			} else {
-				
-				// output temporary result and remaining text to assist in debugging
-				
-				System.err.println("Unexpected symbol in expression() while parsing."); 
-				PrintTreeVisitor printVisitor = new PrintTreeVisitor();
-				result.accept(printVisitor);
-				System.out.println(printVisitor.getResult());
-				for (int i = currentToken; i < tokens.length; ++i)
-					System.out.print(tokens[i]);
-				System.out.println("");
-				return null;
-			}
-		}
+		return result;
+
 	}
 }
