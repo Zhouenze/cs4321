@@ -93,4 +93,33 @@ public class EvaluateTreeVisitorTest {
 		n4.accept(v1);
 		assertEquals(-2.0, v1.getResult(), DELTA);
 	}
+	
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testUnaryMinusMultipleInstances() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new UnaryMinusTreeNode(n1);
+		TreeNode n3 = new UnaryMinusTreeNode(n2);
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		n3.accept(v1);
+		assertEquals(1.0, v1.getResult(), DELTA);
+	}
+	
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
+	public void testCompositeNodes() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new LeafTreeNode(3.0);
+		TreeNode n3 = new AdditionTreeNode(n2, n1);
+		TreeNode n4 = new LeafTreeNode(2.0);
+		TreeNode n5 = new UnaryMinusTreeNode(n4);
+		TreeNode n6 = new DivisionTreeNode(n5, n3);
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		n6.accept(v1);
+		assertEquals(-0.5, v1.getResult(), DELTA);
+	}
 }

@@ -70,6 +70,25 @@ public class BuildPrefixExpressionTreeVisitorTest {
 	 * Shuang Zhang sz468
 	 */
 	@Test
+	public void testUnaryMinusMultipleInstances() {
+		TreeNode n1 = new LeafTreeNode(1.0);
+		TreeNode n2 = new UnaryMinusTreeNode(n1);
+		TreeNode n3 = new UnaryMinusTreeNode(n2);
+		
+        BuildPrefixExpressionTreeVisitor v1 = new BuildPrefixExpressionTreeVisitor();
+		n3.accept(v1);
+		ListNode result = v1.getResult();
+		assertTrue(result instanceof UnaryMinusListNode);
+		ListNode first = result.getNext();
+		assertTrue(first instanceof UnaryMinusListNode);
+		ListNode second = first.getNext();
+		assertTrue(second instanceof NumberListNode);
+		assertEquals(((NumberListNode) second).getData(), 1.0, DELTA);
+	}
+	/**
+	 * Shuang Zhang sz468
+	 */
+	@Test
 	public void testMultiplicationNode() {
 		TreeNode n1 = new LeafTreeNode(1.0);
 		TreeNode n2 = new LeafTreeNode(2.0);
