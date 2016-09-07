@@ -10,43 +10,66 @@ import cs4321.project1.tree.*;
  */
 public class BuildPostfixExpressionTreeVisitor implements TreeVisitor {
 
+	//dummy head node head
+	private ListNode head;
+	private ListNode current;
+
 	public BuildPostfixExpressionTreeVisitor() {
 		// TODO fill me in
+		head = new NumberListNode(-1);
+		current = head;
 	}
 
 	public ListNode getResult() {
 		// TODO fill me in
-		return null;
+		return head.getNext();
 	}
 
 	@Override
 	public void visit(LeafTreeNode node) {
-		// TODO fill me in
+		current.setNext(new NumberListNode(node.getData()));
+		current = current.getNext();
+		
 	}
 
 	@Override
 	public void visit(UnaryMinusTreeNode node) {
-		// TODO fill me in
+		node.getChild().accept(this);
+		current.setNext(new UnaryMinusListNode());
+		current = current.getNext();
 	}
 
 	@Override
 	public void visit(AdditionTreeNode node) {
-		// TODO fill me in
+		node.getLeftChild().accept(this);
+		node.getRightChild().accept(this);
+		current.setNext(new AdditionListNode());
+		current = current.getNext();
 	}
 
 	@Override
 	public void visit(MultiplicationTreeNode node) {
-		// TODO fill me in
+		node.getLeftChild().accept(this);
+		node.getRightChild().accept(this);
+		current.setNext(new MultiplicationListNode());
+		current = current.getNext();
 	}
 
 	@Override
 	public void visit(SubtractionTreeNode node) {
-		// TODO fill me in
+	
+		node.getLeftChild().accept(this);
+		node.getRightChild().accept(this);
+		current.setNext(new SubtractionListNode());
+		current = current.getNext();
 	}
 
 	@Override
 	public void visit(DivisionTreeNode node) {
-		// TODO fill me in
+		node.getLeftChild().accept(this);
+		node.getRightChild().accept(this);
+		current.setNext(new DivisionListNode());
+		current = current.getNext();
 	}
 
 }
