@@ -42,7 +42,7 @@ public class ParserTest {
 
 	}
 
-	//The first complex additional test provided by front-end engineer Enze Zhou
+	// By front-end engineer Enze Zhou ez242
 	@Test
 	public void additionalTest1() {
 		Parser p1 = new Parser("( 1.0 ) + ( 2.0 - 3.0 * ( 4.5 / - 6.0 ) - - - 7.0 )");
@@ -53,7 +53,7 @@ public class ParserTest {
 
 	}
 	
-	//The second complex additional test provided by front-end engineer Enze Zhou
+	// By front-end engineer Enze Zhou ez242
 	@Test
 	public void additionalTest2() {
 		Parser p1 = new Parser("( 1.0 + 2.0 ) * ( 3.0 / 4.0 ) + - - - 5.0 * ( 6.0 - - 9.0 )");

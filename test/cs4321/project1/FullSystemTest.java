@@ -100,4 +100,96 @@ public class FullSystemTest {
 
 	}
 	
+	
+	// By front-end engineer Enze Zhou ez242
+	@Test
+	public void testComplexExpression2() {
+		Parser p1 = new Parser("( 1.0 ) + ( 2.0 - 3.0 * ( 4.5 / - 6.0 ) - - - 7.0 )");
+		TreeNode parseResult1 = p1.parse();
+
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		parseResult1.accept(v1);
+		double treeEvaluationResult = v1.getResult();
+		
+		BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		parseResult1.accept(v2);
+		ListNode prefixRepresentation = v2.getResult();
+		EvaluatePrefixListVisitor v3 = new EvaluatePrefixListVisitor();
+		prefixRepresentation.accept(v3);
+		double prefixEvaluationResult = v3.getResult();
+		
+		BuildPostfixExpressionTreeVisitor v4 = new BuildPostfixExpressionTreeVisitor();
+		parseResult1.accept(v4);
+		ListNode postfixRepresentation = v4.getResult();
+		EvaluatePostfixListVisitor v5 = new EvaluatePostfixListVisitor();
+		postfixRepresentation.accept(v5);
+		double postfixEvaluationResult = v5.getResult();
+		
+		assertEquals(-1.75, treeEvaluationResult, DELTA);
+		assertEquals(-1.75, prefixEvaluationResult, DELTA);
+		assertEquals(-1.75, postfixEvaluationResult, DELTA);
+
+	}
+
+	
+	// By front-end engineer Enze Zhou ez242
+	@Test
+	public void testComplexExpression3() {
+		Parser p1 = new Parser("( 1.0 + 2.0 ) * ( 3.0 / 4.0 ) + - - - 5.0 * ( 6.0 - - 9.0 )");
+		TreeNode parseResult1 = p1.parse();
+
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		parseResult1.accept(v1);
+		double treeEvaluationResult = v1.getResult();
+		
+		BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		parseResult1.accept(v2);
+		ListNode prefixRepresentation = v2.getResult();
+		EvaluatePrefixListVisitor v3 = new EvaluatePrefixListVisitor();
+		prefixRepresentation.accept(v3);
+		double prefixEvaluationResult = v3.getResult();
+		
+		BuildPostfixExpressionTreeVisitor v4 = new BuildPostfixExpressionTreeVisitor();
+		parseResult1.accept(v4);
+		ListNode postfixRepresentation = v4.getResult();
+		EvaluatePostfixListVisitor v5 = new EvaluatePostfixListVisitor();
+		postfixRepresentation.accept(v5);
+		double postfixEvaluationResult = v5.getResult();
+				
+		assertEquals(-72.75, treeEvaluationResult, DELTA);
+		assertEquals(-72.75, prefixEvaluationResult, DELTA);
+		assertEquals(-72.75, postfixEvaluationResult, DELTA);
+
+	}
+	
+	
+	// By front-end engineer Enze Zhou ez242
+	@Test
+	public void testComplexExpression4() {
+		Parser p1 = new Parser("- - - 7.0 )");
+		TreeNode parseResult1 = p1.parse();
+
+		EvaluateTreeVisitor v1 = new EvaluateTreeVisitor();
+		parseResult1.accept(v1);
+		double treeEvaluationResult = v1.getResult();
+		
+		BuildPrefixExpressionTreeVisitor v2 = new BuildPrefixExpressionTreeVisitor();
+		parseResult1.accept(v2);
+		ListNode prefixRepresentation = v2.getResult();
+		EvaluatePrefixListVisitor v3 = new EvaluatePrefixListVisitor();
+		prefixRepresentation.accept(v3);
+		double prefixEvaluationResult = v3.getResult();
+		
+		BuildPostfixExpressionTreeVisitor v4 = new BuildPostfixExpressionTreeVisitor();
+		parseResult1.accept(v4);
+		ListNode postfixRepresentation = v4.getResult();
+		EvaluatePostfixListVisitor v5 = new EvaluatePostfixListVisitor();
+		postfixRepresentation.accept(v5);
+		double postfixEvaluationResult = v5.getResult();
+		
+		assertEquals(-7.0, treeEvaluationResult, DELTA);
+		assertEquals(-7.0, prefixEvaluationResult, DELTA);
+		assertEquals(-7.0, postfixEvaluationResult, DELTA);
+
+	}
 }
