@@ -32,8 +32,8 @@ public class EvaluatePrefixListVisitorTest {
 		ListNode n4 = new NumberListNode(1.0);
 		ListNode n5 = new NumberListNode(2.0);
 		ListNode n6 = new AdditionListNode();
-		n6.setNext(n4);
-		n4.setNext(n5); // expression: + 1.0 2.0
+		n6.setNext(n5);
+		n5.setNext(n4);
 		EvaluatePrefixListVisitor v2 = new EvaluatePrefixListVisitor();
 		n6.accept(v2);
 		assertEquals(3.0, v2.getResult(), DELTA);
