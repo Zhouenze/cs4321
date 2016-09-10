@@ -91,6 +91,9 @@ public class Parser {
 	private TreeNode term() {
 		
 		TreeNode result;
+		
+		// comparison to length should be applied first to avoid subscript-out-of-range
+		
 		if (currentToken < tokens.length) {
 			result = factor();
 		} else {
@@ -138,6 +141,9 @@ public class Parser {
 	private TreeNode expression() {
 		
 		TreeNode result;
+		
+		// comparison to length should be applied first to avoid subscript-out-of-range
+		
 		if (currentToken < tokens.length) {
 			result = term();
 		} else {
