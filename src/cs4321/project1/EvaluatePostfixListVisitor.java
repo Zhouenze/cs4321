@@ -3,54 +3,129 @@ package cs4321.project1;
 import cs4321.project1.list.DivisionListNode;
 import cs4321.project1.list.SubtractionListNode;
 import cs4321.project1.list.NumberListNode;
+
+import java.util.Stack;
+
 import cs4321.project1.list.AdditionListNode;
 import cs4321.project1.list.MultiplicationListNode;
 import cs4321.project1.list.UnaryMinusListNode;
 
 /**
- * Provide a comment about what your class does and the overall logic
- * 
- * @author Your names and netids go here
+ * Evaluate postfix list using a single stack. 
+ * The general algorithm is when we encounter number nodes, we push
+ * it to the stack operation. When we encounter an operator, we pop 
+ * the corresponding number of values of the stack and push the result 
+ * back into stack. The final result in stack is the value of expression
+ *
+ * @author Weicheng Yu wy248
  */
 public class EvaluatePostfixListVisitor implements ListVisitor {
 
+	private Stack<Double> operation; // stack to keep track of numbers so far
+	
+	/**
+	 * Constructor that initializes stack
+	 * 
+	 * 
+	 */
 	public EvaluatePostfixListVisitor() {
-		// TODO fill me in
+		operation = new Stack<Double>();
 	}
 
+	/**
+	 * Method to get the final result of expression
+	 * 
+	 * @return the value of the whole expression
+	 */
 	public double getResult() {
-		// TODO fill me in
-		return 42; // so that skeleton code compiles
+		return operation.peek();
 	}
 
+	/**
+	 * Method to handle NumberListNode 
+	 * 
+	 * @param node
+	 */
 	@Override
 	public void visit(NumberListNode node) {
-		// TODO fill me in
+		operation.push(node.getData());
+		if (node.getNext() != null) {
+			node.getNext().accept(this);
+		}
 	}
 
+	/**
+	 * Method to handle AdditionListNode
+	 * 
+	 * @param node
+	 */
 	@Override
 	public void visit(AdditionListNode node) {
-		// TODO fill me in
+		operation.push(operation.pop() + operation.pop());
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
+		
 	}
 
+	/**
+	 * Method to handle SubtractionListNode 
+	 * 
+	 * @param node
+	 */
 	@Override
 	public void visit(SubtractionListNode node) {
-		// TODO fill me in
+		double right = operation.pop();
+		double left = operation.pop();
+		
+		operation.push(left - right);
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
+		
 	}
 
+	/**
+	 * Method to handle MultiplicationListNode 
+	 * 
+	 * @param node
+	 */
 	@Override
 	public void visit(MultiplicationListNode node) {
-		// TODO fill me in
+		operation.push(operation.pop() * operation.pop());
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
+		
 	}
 
+	/**
+	 * Method to handle DivisionListNode 
+	 * 
+	 * @param node
+	 */
 	@Override
 	public void visit(DivisionListNode node) {
-		// TODO fill me in
+		double right = operation.pop();
+		double left = operation.pop();
+		
+		operation.push(left / right);
+		if (node.getNext() != null){
+			node.getNext().accept(this);
+		}
 	}
 
+	/**
+	 * Method to handle UnaryMinusListNode 
+	 * 
+	 * @param node
+	 */
 	@Override
 	public void visit(UnaryMinusListNode node) {
-		// TODO fill me in
+		operation.push(operation.pop() * -1);
+		if (node.getNext() != null) {
+			node.getNext().accept(this);
+		}
 	}
 
 }
